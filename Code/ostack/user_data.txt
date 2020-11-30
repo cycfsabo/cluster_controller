@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+# Installing kubeadm, kubelet and kubectl
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+sudo apt-get install -y kubelet=1.17.6-00 kubeadm=1.17.6-00 kubectl=1.17.6-00
+
+sudo apt install -y nfs-common
+
+kubeadm join 10.0.0.172:6443 --token xglbwp.da7jgod8fzrz2nhu     --discovery-token-ca-cert-hash sha256:6af0a6a9d2c84ff4e4ce695aeb77a3625ddaca5c4ef27f01a53dd4808d05bd9f
+
